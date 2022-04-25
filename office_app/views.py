@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from office_app.models import Patient, Physician, Appointment, Secretary
+from office_app.models import Patient, Physician, Appointment, Secretary, Speciality
 
 # Create your views here.
 class Home(View):
@@ -21,18 +21,46 @@ class Home(View):
 
         return render(request, "main/home.html", {'error': 'username/password incorrect'})
 
-class Appointment(View):
+class AppointmentView(View):
     def get(self, request):
         if not request.session.get("username"):
             return redirect("home")
-        try:
-            appointments = Appointment.objects.filter()
-        except AttributeError:
-            return render(request, "main/appointment.html", {'error': 'No Appointments have been scheduled yet..'})
 
-        if len(appointments) > 0:
-            return render(request, "main/appointment.html", {"appointments": appointments})
+        appointments = Appointment.objects.all()
+
+        if len(appointments) < 1:
+            return render(request, "main/appointment.html", {"error": 'No appointments have been scheduled yet...'})
+
+
+        return render(request, "main/appointment.html", {"appointments": appointments})
 
 
     def post(self, request):
         pass
+
+class PhysicianView(View):
+    def get(self, request):
+        if not request.session.get("username"):
+            return redirect("home")
+
+        physicians = Physician.objects.all()
+        if len(physicians) < 1:
+            return render(request, "main/physician/create_physician.html", {'error': 'No Physician exist yet...', 'specialities': Speciality.choices})
+
+
+        return render(request, "main/physician/list_physicians.html", {'physicians': physicians})
+
+    def post(self, request):
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        speciality = request.POST['speciality']
+        print(first_name, last_name, speciality)
+
+        if first_name != '' and last_name != '' and speciality !='':
+            print('working')
+            Physician.objects.create(first_name=first_name, last_name=last_name, speciality=speciality)
+
+        physicians = Physician.objects.all()
+        return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
+
+
