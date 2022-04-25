@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    {% if error %}
+        {{ error }}
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Speciality</th>
+            <th>Edit / Delete</th>
+        </tr>
+
+    {% for i in physicians %}
+        <tr>
+            <td>{{ i.first_name }}</td>
+            <td>{{ i.last_name }}</td>
+            <td>{{ i.speciality }}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
+    <hr>
+     <a href="{% url 'add_physician' %}">Add new physician</a>
+{% endblock %}
