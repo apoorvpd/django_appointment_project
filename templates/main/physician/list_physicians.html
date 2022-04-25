@@ -18,7 +18,7 @@
             <td>{{ i.first_name }}</td>
             <td>{{ i.last_name }}</td>
             <td>{{ i.speciality }}</td>
-
+            <td><a href="{% url 'edit_physician' first_name=i.first_name last_name=i.last_name speciality=i.speciality%}">Edit/Delete Physician</a></td>
         </tr>
     {% endfor %}
     </table>

@@ -85,3 +85,27 @@ class PhysicianListView(View):
 
         physicians = Physician.objects.all()
         return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
+
+class PhysicianEditView(View):
+    def get(self, request):
+        if not request.session.get("username"):
+            return redirect("home")
+
+        physicians = Physician.objects.all()
+        if len(physicians) < 1:
+            return render(request, "main/physician/list_physicians.html", {'error': 'No Physician exist yet...', 'specialities': Speciality.choices})
+
+        return render(request, "main/physician/list_physicians.html", {'specialities': Speciality.choices, 'physicians': physicians})
+
+    def post(self, request):
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        speciality = request.POST['speciality']
+        print(first_name, last_name, speciality)
+
+        if first_name != '' and last_name != '' and speciality !='':
+            print('working')
+            Physician.objects.create(first_name=first_name, last_name=last_name, speciality=speciality)
+
+        physicians = Physician.objects.all()
+        return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})

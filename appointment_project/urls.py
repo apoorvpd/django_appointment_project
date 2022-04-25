@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from office_app.views import Home, AppointmentView, PhysicianCreateView, PhysicianListView
+from office_app.views import Home, AppointmentView, PhysicianCreateView, PhysicianListView, PhysicianEditView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
 
     path('add_physician/', PhysicianCreateView.as_view(), name='add_physician'),
     path('list_physician/', PhysicianListView.as_view(), name='list_physician'),
+    path('edit_physician/<slug:first_name>/<slug:last_name>/<slug:speciality>', PhysicianEditView.as_view(), name='edit_physician'),
 ]
