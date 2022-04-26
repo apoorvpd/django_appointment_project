@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if error %}
+        {{ error }}
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Speciality</th>
+        </tr>
+
+        <tr>
+            <td>{{ physician.first_name }}</td>
+            <td>{{ physician.last_name }}</td>
+            <td>{{ physician.speciality }}</td>
+        </tr>
+    </table>
+
+     <hr>
+    <form action="{% url 'edit_physician' id=physician.id%}" method="post">
+
+        {% csrf_token %}
+        <label for="first_name">Physician First Name:</label>
+        <input type="text" id="first_name" name="first_name" value={{ physician.first_name }} >
+
+        <label for="last_name">Physician Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value={{ physician.last_name }}>
+
+        <label for="speciality">Physician's Speciality:</label>
+        <input type="text" id="speciality" name="speciality" value={{ physician.speciality }}>
+        <hr>
+        <button type="submit">UPDATE PHYSICIAN</button>
+        <hr>
+    </form>
+    <hr>
+
+{% endblock %}

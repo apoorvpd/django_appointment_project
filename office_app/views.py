@@ -87,25 +87,21 @@ class PhysicianListView(View):
         return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
 
 class PhysicianEditView(View):
-    def get(self, request):
+    def get(self, request, **kwargs):
         if not request.session.get("username"):
             return redirect("home")
 
-        physicians = Physician.objects.all()
-        if len(physicians) < 1:
-            return render(request, "main/physician/list_physicians.html", {'error': 'No Physician exist yet...', 'specialities': Speciality.choices})
+        physician_instance = Physician.objects.get(id=self.kwargs['id'])
+        print(self.kwargs)
+        print(physician_instance)
 
-        return render(request, "main/physician/list_physicians.html", {'specialities': Speciality.choices, 'physicians': physicians})
+        return render(request, "main/physician/edit_physician.html", {'physician': physician_instance})
 
-    def post(self, request):
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        speciality = request.POST['speciality']
-        print(first_name, last_name, speciality)
-
-        if first_name != '' and last_name != '' and speciality !='':
-            print('working')
-            Physician.objects.create(first_name=first_name, last_name=last_name, speciality=speciality)
-
-        physicians = Physician.objects.all()
-        return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
+    def post(self, request, **kwargs):
+        physician_instance = Physician.objects.get(id=int(self.kwargs['id']))
+        print(physician_instance)
+        physician_instance.first_name = request.POST['first_name']
+        physician_instance.last_name = request.POST['last_name']
+        physician_instance.speciality = request.POST['speciality']
+        physician_instance.save()
+        return render(request, "main/physician/edit_physician.html", {'physician': physician_instance})

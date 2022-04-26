@@ -24,5 +24,7 @@ urlpatterns = [
 
     path('add_physician/', PhysicianCreateView.as_view(), name='add_physician'),
     path('list_physician/', PhysicianListView.as_view(), name='list_physician'),
-    path('edit_physician/<slug:first_name>/<slug:last_name>/<slug:speciality>', PhysicianEditView.as_view(), name='edit_physician'),
+    # path('edit_physician/<slug:first_name>/<slug:last_name>/<slug:speciality>', PhysicianEditView.as_view(), name='edit_physician'),
+    path('edit_physician/', PhysicianEditView.as_view(), name='edit_physician'),
+    path('edit_physician/<int:id>', PhysicianEditView.as_view(), name='edit_physician'),
 ]
