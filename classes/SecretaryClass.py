@@ -1,6 +1,7 @@
-from classes import PatientClass, PhysicianClass
+from classes.PhysicianClass import PhysicianClass
+from classes.PatientClass import PatientClass
 from office_app.models import Appointment, Patient, Physician
-import datetime
+from datetime import datetime
 
 class SecretaryClass:
     def __init__(self, username, password):

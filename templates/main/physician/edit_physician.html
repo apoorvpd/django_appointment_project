@@ -20,7 +20,7 @@
     </table>
 
      <hr>
-    <form action="{% url 'edit_physician' id=physician.id%}" method="post">
+    <form action="{% url 'edit_physician' id=physician.id %}" method="post">
 
         {% csrf_token %}
         <label for="first_name">Physician First Name:</label>

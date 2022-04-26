@@ -8,4 +8,4 @@ class PhysicianClass:
 
     def save_details(self):
         physician = Physician.objects.create(first_name=self.first_name, last_name=self.last_name, speciality=self.speciality)
-        return f"{physician.first_name, physician.last_name} with {physician.problem} saved to the db"
+        return f"{physician.first_name, physician.last_name} with {physician.speciality} saved to the db"

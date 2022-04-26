@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from office_app.models import Patient, Physician, Appointment, Secretary, Speciality
+from classes.SecretaryClass import SecretaryClass
+from classes.PhysicianClass import PhysicianClass
+from classes.PatientClass import PatientClass
 
 # Create your views here.
 class Home(View):
@@ -54,13 +57,18 @@ class PhysicianCreateView(View):
         last_name = request.POST['last_name']
         speciality = request.POST['speciality']
         print(first_name, last_name, speciality)
+        message = ''
 
         if first_name != '' and last_name != '' and speciality !='':
             print('working')
-            Physician.objects.create(first_name=first_name, last_name=last_name, speciality=speciality)
+            secretary_instance = Secretary.objects.get(username=request.session.get("username"))
+            secretary_class_instance = SecretaryClass(secretary_instance.username, secretary_instance.password)
+            message = secretary_class_instance.add_doctor(first_name=first_name, last_name=last_name, speciality=speciality)
+
 
         physicians = Physician.objects.all()
-        return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
+        return render(request, "main/physician/create_physician.html", {'physicians': physicians, 'specialities': Speciality.choices,
+                                                                       'message': message})
 
 class PhysicianListView(View):
     def get(self, request):
@@ -74,17 +82,7 @@ class PhysicianListView(View):
         return render(request, "main/physician/list_physicians.html", {'specialities': Speciality.choices, 'physicians': physicians})
 
     def post(self, request):
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        speciality = request.POST['speciality']
-        print(first_name, last_name, speciality)
-
-        if first_name != '' and last_name != '' and speciality !='':
-            print('working')
-            Physician.objects.create(first_name=first_name, last_name=last_name, speciality=speciality)
-
-        physicians = Physician.objects.all()
-        return render(request, "main/physician/list_physicians.html", {'physicians': physicians, 'specialities': Speciality.choices})
+        pass
 
 class PhysicianEditView(View):
     def get(self, request, **kwargs):
